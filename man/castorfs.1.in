@@ -1,0 +1,216 @@
+.TH castorfs 1 "@DATE@" "castorfs @CPACK_PACKAGE_VERSION@"
+.SH NAME
+.PP
+  castorfs - filesystem client based on CASTOR.
+.SH USAGE
+.PP
+  castorfs [options] mount-point
+
+.SH OPTIONS
+
+.SS General options:
+.TP
+.B -o opt,[opt...]        
+mount options
+
+.TP
+.B  -h   --help            
+print help
+
+.TP
+.B  -V   --version         
+print version
+
+.SS CASTORFS options:
+.TP
+.B -o castor_readonly
+readonly mount
+
+.TP
+.B -o castor_user
+CASTOR user name (default:  getpwuid(uid))
+
+.TP
+.B -o castor_uid
+CASTOR user uid
+
+.TP
+.B -o castor_gid            
+CASTOR user gid
+
+.TP
+.B  -o castor_root
+CASTOR root directory (default: '/castor')
+
+.TP
+.B -o castor_stage_host
+CASTOR stage host (set environment variable STAGE_HOST)
+
+.TP
+.B -o castor_stage_svcclass 
+CASTOR stage service class (set environment variable STAGE_SVCCLASS)
+
+.SS FUSE options:
+.TP
+.B -d   -o debug
+enable debug output (implies -f)
+
+.TP
+.B -f
+foreground operation
+
+.TP
+.B -s
+disable multi-threaded operation
+
+.TP
+.B -o allow_other
+allow access to other users
+
+.TP
+.B -o allow_root
+allow access to root
+
+.TP
+.B  -o nonempty
+allow mounts over non-empty file/dir
+
+.TP
+.B -o default_permissions 
+enable permission checking by kernel
+
+.TP
+.B  -o fsname=NAME
+set filesystem name
+
+.TP
+.B  -o subtype=NAME
+set filesystem type
+
+.TP
+.B -o large_read
+issue large read requests (2.4 only)
+
+.TP
+.B  -o max_read=N
+set maximum size of read requests
+
+.TP
+.B  -o hard_remove
+immediate removal (don't hide files)
+
+.TP
+.B -o use_ino
+let filesystem set inode numbers
+
+.TP
+.B  -o readdir_ino
+try to fill in d_ino in readdir
+
+.TP 
+.B  -o direct_io           use direct I/O
+
+.TP
+.B -o kernel_cache
+cache files in kernel
+
+.TP 
+.B  -o [no]auto_cache
+enable caching based on modification times (off)
+
+.TP
+.B  -o umask=M
+set file permissions (octal)
+
+.TP
+.B -o uid=N               
+set file owner
+
+.TP
+.B -o gid=N
+set file group
+
+.TP
+.B -o entry_timeout=T
+cache timeout for names (1.0s)
+
+.TP
+.B  -o negative_timeout=T
+cache timeout for deleted names (0.0s)
+
+.TP
+.B -o attr_timeout=T
+cache timeout for attributes (1.0s)
+
+.TP
+.B -o ac_attr_timeout=T
+auto cache timeout for attributes (attr_timeout)
+
+.TP
+.B  -o intr
+allow requests to be interrupted
+
+.TP
+.B -o intr_signal=NUM
+signal to send on interrupt (10)
+
+.TP
+.B -o modules=M1[:M2...]
+names of modules to push onto filesystem stack
+
+.TP
+.B -o max_write=N         
+set maximum size of write requests
+
+.TP 
+.B -o max_readahead=N
+set maximum readahead
+
+.TP
+.B  -o async_read
+perform reads asynchronously (default: disabled)
+
+.TP 
+.B -o sync_read
+perform reads synchronously
+
+.TP
+.B  -o atomic_o_trunc
+enable atomic open+truncate support
+
+.SS Module options:
+.TP
+.B [subdir]
+
+.TP
+.B -o subdir=DIR
+prepend this directory to all paths (mandatory)
+
+.TP
+.B -o [no]rellinks
+transform absolute symlinks to relative
+
+.TP
+.B [iconv]
+
+.TP
+.B  -o from_code=CHARSET
+original encoding of file names (default: UTF-8)
+
+.TP
+.B -o to_code=CHARSET
+new encoding of the file names (default: UTF-8)
+
+.SH EXAMPLES
+.TP
+Run filesystem at debug mode. Mount point is /castorfs directory. CASTOR root if /castor/cern.ch:
+.B "castorfs" -d -o allow_other, castor_stage_host=castorlhcb, castor_stage_svcclass=lhcbraw, castor_root=/castor/cern.ch /castorfs
+
+.SH AUTHOR
+.P 
+Alexander MAZUROV (alexander.mazurov@gmail.com)
+.P
+http://code.google.com/p/castorfs/
+
+
+

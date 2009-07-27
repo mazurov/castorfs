@@ -1,0 +1,109 @@
+#!/bin/bash
+
+# Alexander MAZUROV
+
+# chkconfig: 35 98 1
+# description: Filesystem client based on CASTOR. Mount to /castorfs directory 
+
+# Following comments are necessary for LSB conformity (http://www.linuxbase.org)
+
+### BEGIN INIT INFO
+# Provides: castorfs-mount-r
+# Required-Start: 
+# Required-Stop: 
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 6
+# Short-Description: Filesystem client based on CASTOR. Mount to /castorfs directory
+# Description: Filesystem client based on CASTOR. Mount to /castorfs directory
+### END INIT INFO
+
+
+# Source function library
+. /etc/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+RETVAL=0
+CMD=/opt/castorfs/bin/castorfs
+start() {
+    if [ ! -d /castorfs ]
+    then
+      echo "Create directory /castorfs"
+      mkdir -m a+rw /castorfs
+    fi    
+    echo -n "Starting castorfs: " 
+    # Start me up!
+    su -c "mount.fuse $CMD /castorfs  -o castor_readonly,allow_other,castor_uid=10446,castor_gid=1470,castor_user=lbtbsupp,castor_stage_host=castorlhcb,castor_stage_svcclass=lhcbraw"
+    RETVAL=$?
+    [ $RETVAL -ne 0 ] && echo "FAILED"
+    [ $RETVAL -eq 0 ] && echo "OK" && touch /var/lock/subsys/castorfs-1
+    return $RETVAL
+}
+
+stop() {
+    echo -n "Stopping castorfs: " 
+    fusermount -u /castorfs
+    RETVAL=$?
+    [ $RETVAL -ne 0 ] && echo "FAILED"
+    [ $RETVAL -eq 0 ] && echo "OK" && rm -f /var/lock/subsys/castorfs-1
+    return $RETVAL
+}    
+
+umount()
+{
+  echo -n "Force unmount castorfs: "
+  /bin/umount -fl /castorfs
+  RETVAL=$?
+  [ $RETVAL -ne 0 ] && echo "FAILED"
+  [ $RETVAL -eq 0 ] && echo "OK" && rm -f /var/lock/subsys/castorfs-1
+}
+
+restart() {
+      stop
+    start
+}    
+
+reload() {
+    stop
+    start
+}
+
+version()
+{
+  $CMD -V
+}
+
+case "$1" in
+  start)
+      start
+    ;;
+  stop)
+      stop
+    ;;
+  umount)
+      umount
+    ;;
+  status)
+    status castorfs
+    ;;
+  restart)
+      restart
+    ;;
+  condrestart)
+      [ -f /var/lock/subsys/castorfs-1 ] && restart || :
+    ;;
+  reload)
+    reload
+    ;;
+  version)
+    version
+   ;;
+  *)
+    echo "Usage: $0 {start|stop|status|umount|restart|condrestart|reload|version}" 
+    exit 1
+esac
+
+exit $?
+
+
