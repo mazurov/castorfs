@@ -1,0 +1,5 @@
+2010-01-28  Alexander MAZUROV  <alexander.mazurov@gmail.com>
+
+    * Fuse group is automaticaly added to current castorfs process (only if you run 
+      program as root and set -o castor_user_uid as program parameter).
+
