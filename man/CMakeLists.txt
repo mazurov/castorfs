@@ -1,6 +1,6 @@
-CONFIGURE_FILE(castorfs.1.in ${PROJECT_SOURCE_DIR}/castorfs.1) 
+CONFIGURE_FILE(castorfs.1.in ${PROJECT_BINARY_DIR}/man/castorfs.1) 
 INCLUDE (${PROJECT_SOURCE_DIR}/macros/FindGZIP.cmake)
-SET(castorfs_man_src ${PROJECT_SOURCE_DIR}/man/castorfs.1)
+SET(castorfs_man_src ${PROJECT_BINARY_DIR}/man/castorfs.1)
 SET(castorfs_man_gz  ${PROJECT_BINARY_DIR}/castorfs.1.gz)
 
 # Compression of the manuals

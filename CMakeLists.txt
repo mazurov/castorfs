@@ -16,17 +16,25 @@ INCLUDE (macros/Version.cmake)
 CONFIGURE_FILE(config.h.in ${PROJECT_SOURCE_DIR}/config.h) 
 
 ADD_SUBDIRECTORY (man)
-ADD_SUBDIRECTORY (init)
+#ADD_SUBDIRECTORY (init)
 ADD_SUBDIRECTORY (src)
 # add_subdirectory (tests) 
 
 INCLUDE (InstallRequiredSystemLibraries)
 
+IF ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+  SET (CPACK_DEBIAN_SYSTEM_PROCESSOR "amd64")
+ELSE ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+  SET (CPACK_DEBIAN_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR})
+ENDIF ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+
+SET(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_RELEASE}_${CPACK_DEBIAN_SYSTEM_PROCESSOR}")
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY "castorfs-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
 SET(CPACK_SOURCE_IGNORE_FILES "Makefile;CMakeCache.txt;CMakeCache.txt;cmake_install.cmake;CPackConfig.cmake;CPackSourceConfig.cmake;install_manifest.txt;.*.tar.gz;CMakeFiles;_CPack_Packages;.*.dir;.*.(swp|swo);configure.ac;.deps;.*.deb;.*.rpm;.*.exe;Testing;RPM/.*;bin/.*")
 SET(CPACK_GENERATOR "TGZ;DEB;")
 SET(CPACK_SOURCE_GENERATOR "TGZ")
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README")
+SET(CPACK_DEBIAN_PACKAGE_DEPENDS "fuse-utils (>= 2.7.4), castor-lib  (>= 2.1.9)")
 
 
 #INCLUDE (Doxygen)
@@ -36,6 +44,7 @@ INCLUDE (UseRPMTools)
 RPMTools_ADD_RPM_TARGETS(castorfs "${PROJECT_SOURCE_DIR}/castorfs.spec.in")
 ADD_DEPENDENCIES (castorfs_rpm man)
 ADD_DEPENDENCIES (castorfs_srpm man)
+
 
 
 #ENABLE_TESTING()

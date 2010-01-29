@@ -52,6 +52,7 @@
 #include <errno.h>
 #include <sys/time.h>
 #include <stdlib.h>
+#include <grp.h>
 
 #include <fuse/fuse.h> /* FUSE */
 #include <Cthread_api.h> /* Castor - Threads */
@@ -228,7 +229,27 @@ static void cfuse_free_segattrs(struct Cns_segattrs **attrs,int size)
   free(*attrs);
 }
 /* ---------------------------------------------------------------------------------- */
+int cfuse_init_account_fuse()
+{
+  struct group fuse_group, *pfuse_group=NULL;
+  int bufsize = sysconf(_SC_GETGR_R_SIZE_MAX);
+  char *buf;
 
+  buf = malloc(bufsize);
+  getgrnam_r("fuse",&fuse_group,buf,bufsize,&pfuse_group);
+  if (!pfuse_group) {
+      DEBUG("main.c: Can not find group %s","fuse");
+      free(buf);
+      return -1;
+  }
+  if (-1 == setgroups(1,&fuse_group.gr_gid)){
+    DEBUG("main.c: Can not set fuse group for current proccess gid=%d",fuse_group.gr_gid);
+    free(buf);
+    return -1;
+  }
+  free(buf);
+}
+/* ---------------------------------------------------------------------------------- */
 int cfuse_init_account()
 {
   int res=0;
@@ -238,6 +259,9 @@ int cfuse_init_account()
       DEBUG("main.c: could not setup uid to %d\n",castorfs.uid);
       return -1;
     }
+
+    /* Add also fuse group */
+    cfuse_init_account_fuse();
   }
   if ( 0 != castorfs.uid) {
     res = setuid(castorfs.uid);

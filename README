@@ -1,0 +1,70 @@
+===============================================================================
+INSTALL
+===============================================================================
+CastorFS works only on Linux
+-------------------------------------------------------------------------------
+*Prerequires*
+   
+   * fuse library (it's standart package and for Ubuntu it's recomened to 
+     install fuse-utils package)
+   * castor-lib (for debian systems you can download it from castorfs github
+     repository at Downloads area).
+-------------------------------------------------------------------------------
+*CASTOR user*
+
+You need to have a local user account  the same user id (UID), group id (GID) 
+and login name as on CASTOR. CASTOR group also should be exist.
+
+For example, we have group z5 with GID=1470. At Ubuntu you can create it using 
+the following command:
+   $> sudo groupadd -g 1470 z5
+
+User lbtbsupp has UID=10446 and GID=1470 (user should  also  belong to fuse 
+group):
+   $> sudo useradd -u 10446 -g z5 -G fuse -s /bin/bash lbtbsupp
+===============================================================================
+HOW TO RUN PROGRAM
+===============================================================================
+
+   * For example, we use lbtbsupp as your CASTOR account (but you need to use 
+     you own account).
+   * ..and mount castorfs to folder ~/castorfs
+   * We use the following CASTOR parameters:
+      - STAGE_HOST=castorlhcb
+      - STAGE_SVCCLASS=default
+      - RFIO_USE_CASTOR_V2=YES 
+-------------------------------------------------------------------------------
+It's two variants:
+-------------------------------------------------------------------------------
+(1) If you login to system as lbtbsupp user:
+   $> castorfs -o castor_stage_host=castorlhcb \
+         -o castor_stage_svcclass=default ~/castorfs
+
+In this case ~/castorfs is only accesible from local lbtbsupp account.
+
+Unmount command:
+  $> fusermount -u ~/castorfs
+
+-------------------------------------------------------------------------------
+(2) Recomended. If you want to access castorfs using another local account you 
+    need:
+   - Uncomment the following line at /etc/fuse file:
+      ...
+      user_allow_other
+      ...
+   - Give full access for castorfs directory:
+     $> chmod 777 ~/castorfs
+
+And then mount  CastorFS
+   $> sudo castorfs -o castor_stage_host=castorlhcb -o castor_stage_svcclass=default \
+      -o castor_uid=10446 -o castor_gid=1470 -o castor_user=lbtbsupp \
+      -o allow_other ~/castorfs
+
+Unmount command:
+  $> sudo fusermount -u ~/castorfs
+
+===============================================================================
+BUGS
+===============================================================================
+   * It should not exists /castor folder at you system
+   
