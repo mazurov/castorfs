@@ -52,7 +52,7 @@ Unmount command:
       ...
       user_allow_other
       ...
-   - Give full access for castorfs directory:
+   - Give a full access for the castorfs directory:
      $> chmod 777 ~/castorfs
 
 And then mount  CastorFS

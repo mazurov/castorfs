@@ -209,8 +209,6 @@ Run filesystem at debug mode. Mount point is /castorfs directory. CASTOR root if
 .SH AUTHOR
 .P 
 Alexander MAZUROV (alexander.mazurov@gmail.com)
-.P
-http://code.google.com/p/castorfs/
 
 
 
