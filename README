@@ -9,6 +9,7 @@ CastorFS works only on Linux
      install fuse-utils package)
    * castor-lib (for debian systems you can download it from castorfs github
      repository at Downloads area).
+   * castor-devel (for development).
 -------------------------------------------------------------------------------
 *CASTOR user*
 
