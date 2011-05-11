@@ -4,7 +4,7 @@
  *
  * Implementation of FUSE function for access CASTOR.
  *
- *     @author  Alexander MAZUROV (alexander.mazurov@cern.ch
+ *     @author  Alexander MAZUROV (alexander.mazurov@cern.ch)
  *
  *   @internal
  *     Created  01/21/2009
@@ -90,8 +90,8 @@ static struct fuse_opt castorfs_opts[] = {
   CASTORFS_OPT("castor_gid=%d",   gid, 0),
   CASTORFS_OPT("castor_readonly", readonly,1),
 
-	FUSE_OPT_KEY("-V",          KEY_VERSION),
-	FUSE_OPT_KEY("--version",   KEY_VERSION),
+  FUSE_OPT_KEY("-V",          KEY_VERSION),
+  FUSE_OPT_KEY("--version",   KEY_VERSION),
   FUSE_OPT_KEY("-h",          KEY_HELP),
   FUSE_OPT_KEY("--help",      KEY_HELP),
 
