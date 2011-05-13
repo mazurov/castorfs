@@ -16,7 +16,7 @@ INCLUDE (macros/Version.cmake)
 CONFIGURE_FILE(config.h.in ${PROJECT_SOURCE_DIR}/config.h) 
 
 ADD_SUBDIRECTORY (man)
-#ADD_SUBDIRECTORY (init)
+ADD_SUBDIRECTORY (init)
 ADD_SUBDIRECTORY (src)
 # add_subdirectory (tests) 
 
